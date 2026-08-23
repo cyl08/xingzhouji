@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>足迹地图 · 使用指南（详细版）</title>
+<style>
+  :root { --warm:#e8823c; --paper:#faf6ee; --ink:#3a342c; --soft:#8a7f6e; --line:#e8dfd0; }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html { scroll-behavior:smooth; }
+  body { font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; background:var(--paper); color:var(--ink); line-height:1.85; font-size:16px; padding-bottom:40px; }
+  .serif { font-family:"STSong","SimSun","Noto Serif SC",serif; }
+  header { background:linear-gradient(135deg,#e8823c,#d8732e); color:#fff; text-align:center; padding:34px 20px 28px; }
+  header h1 { font-family:"STSong","SimSun",serif; font-size:26px; letter-spacing:3px; }
+  header p { opacity:.92; margin-top:6px; font-size:14px; }
+  .wrap { max-width:580px; margin:0 auto; padding:0 14px; }
+  .quick { background:#fff; border:2px solid var(--warm); border-radius:16px; padding:18px 16px; margin:18px 0; }
+  .quick h2 { font-family:"STSong","SimSun",serif; font-size:17px; color:var(--warm); text-align:center; margin-bottom:10px; }
+  .quick .row { display:flex; align-items:center; gap:8px; font-size:15px; margin:7px 0; }
+  .quick .badge { flex-shrink:0; width:26px; height:26px; background:var(--warm); color:#fff; border-radius:50%; text-align:center; line-height:26px; font-weight:700; font-size:14px; }
+  .toc { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:16px 0; }
+  .toc h2 { font-family:"STSong","SimSun",serif; font-size:15px; color:var(--warm); margin-bottom:8px; }
+  .toc a { display:block; color:var(--ink); text-decoration:none; padding:6px 0; font-size:14.5px; border-bottom:1px dashed #f0e8d8; }
+  .toc a:last-child { border-bottom:none; }
+  .toc a:hover { color:var(--warm); }
+  .step { background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px 18px; margin:16px 0; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+  .step .head { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .step .num { flex-shrink:0; width:30px; height:30px; background:var(--warm); color:#fff; font-family:"STSong","SimSun",serif; font-weight:700; border-radius:50%; text-align:center; line-height:30px; font-size:15px; }
+  .step h3 { font-family:"STSong","SimSun",serif; font-size:19px; flex:1; }
+  .step .speak { flex-shrink:0; border:1px solid var(--warm); background:transparent; color:var(--warm); padding:6px 12px; border-radius:18px; cursor:pointer; font-size:13px; font-family:inherit; }
+  .step .speak:active { background:var(--warm); color:#fff; }
+  .step ol { margin:6px 0 4px 22px; }
+  .step li { margin:9px 0; font-size:15.5px; }
+  .step b { color:var(--warm); }
+  .step ul { margin:6px 0 4px 20px; }
+  .step ul li { margin:7px 0; font-size:14.5px; }
+  .tip { background:#fff7ee; border-left:4px solid var(--warm); border-radius:0 10px 10px 0; padding:12px 14px; margin-top:12px; font-size:14px; color:#7a6a55; }
+  .warn { background:#fff0ef; border-left:4px solid #d03b3b; border-radius:0 10px 10px 0; padding:12px 14px; margin-top:12px; font-size:14px; color:#8c2f24; }
+  .demo { background:#fbf7ef; border:1px dashed #d9cbb4; border-radius:12px; padding:16px; margin-top:14px; text-align:center; }
+  .demo .cap { font-size:12px; color:var(--soft); margin-top:8px; }
+  .btn-add { width:54px; height:54px; border-radius:50%; background:var(--warm); color:#fff; font-size:28px; line-height:54px; margin:0 auto; box-shadow:0 4px 14px rgba(232,130,60,.4); }
+  .me-demo { width:44px; height:44px; border-radius:50%; background:#fff; box-shadow:0 3px 10px rgba(0,0,0,.2); font-size:24px; line-height:44px; margin:0 auto; }
+  .flow { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; margin:6px 0; }
+  .flow .box { background:#fff; border:1px solid var(--line); border-radius:8px; padding:7px 10px; font-size:13px; }
+  .flow .arrow { color:var(--warm); font-size:17px; }
+  /* 成就表 */
+  .ach-table { width:100%; border-collapse:collapse; margin:10px 0; font-size:13.5px; }
+  .ach-table td { border:1px solid var(--line); padding:7px 9px; }
+  .ach-table td:first-child { font-size:18px; text-align:center; width:34px; }
+  footer { text-align:center; padding:24px 20px 10px; color:var(--soft); font-size:13.5px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗺 足迹地图 · 使用指南</h1>
+  <p>详细版 · 手机看 · 每一步都讲清楚</p>
+</header>
+
+<div class="wrap">
+
+  <div class="quick">
+    <h2>⚡ 三步上手（最快）</h2>
+    <div class="row"><span class="badge">1</span>点右下角橙色 <b>＋</b></div>
+    <div class="row"><span class="badge">2</span>在地图上<b>点一下</b>位置</div>
+    <div class="row"><span class="badge">3</span>填名字 → 点 <b>点亮 ✨</b></div>
+  </div>
+
+  <div class="toc">
+    <h2>📖 目录</h2>
+    <a href="#s1">1 · 打开应用</a>
+    <a href="#s2">2 · 点亮足迹（超详细）</a>
+    <a href="#s3">3 · 定位 + 自动填地址</a>
+    <a href="#s4">4 · 足迹本</a>
+    <a href="#s5">5 · 相册</a>
+    <a href="#s6">6 · 足迹连线</a>
+    <a href="#s7">7 · 成就（完整清单）</a>
+    <a href="#s8">8 · 海报</a>
+    <a href="#s9">9 · 清欢的信</a>
+    <a href="#s10">10 · 全部小彩蛋</a>
+    <a href="#s11">11 · 装手机 / 分享</a>
+    <a href="#faq">12 · 常见问题 FAQ</a>
+    <a href="#data">13 · 数据说明</a>
+  </div>
+
+  <div class="step" id="s1">
+    <div class="head"><span class="num">1</span><h3>打开应用</h3><button class="speak" onclick="speak('电脑上，双击 index.html 文件。手机上，打开网址。进入后，点开始我的旅程按钮。')">🔊</button></div>
+    <ol>
+      <li><b>电脑</b>：双击 D 盘「足迹地图」文件夹里的 <b>index.html</b></li>
+      <li><b>手机</b>：打开分享给你的<b>网址</b>（或已装好的 App 图标）</li>
+      <li>看到开始界面 → 点橙色按钮 <b>「开始我的旅程 →」</b></li>
+    </ol>
+    <div class="demo"><div class="me-demo">⛰️</div><div class="cap">↑ 点橙色按钮就进入</div></div>
+  </div>
+
+  <div class="step" id="s2">
+    <div class="head"><span class="num">2</span><h3>点亮足迹（超详细）</h3><button class="speak" onclick="speak('这是最重要的功能。第一步，点右下角的橙色加号。第二步，在地图上点一下你想标记的位置，可以先用手指放大缩小地图。第三步，弹出表格后，填地名、城市、日期，可以上传照片、写感想。第四步，点橙色的点亮按钮保存。')">🔊</button></div>
+    <div class="flow">
+      <div class="box">点 <b>＋</b></div><div class="arrow">→</div>
+      <div class="box">点地图</div><div class="arrow">→</div>
+      <div class="box">填表</div><div class="arrow">→</div>
+      <div class="box">点亮 ✨</div>
+    </div>
+    <ol>
+      <li>点屏幕右下角橙色 <b>＋ 按钮</b>（进入添加模式，底部有提示）</li>
+      <li>在地图上<b>点一下</b>你去过的地方（可先双指放大/缩小地图，找得更准）</li>
+      <li>弹出表格，<b>逐项填写</b>：</li>
+    </ol>
+    <ul>
+      <li><b>地名</b>（必填）：比如「武汉·中国地质大学」「长沙·橘子洲」</li>
+      <li><b>城市</b>：比如「武汉」，用来分组</li>
+      <li><b>日期</b>：默认是今天，可改成实际去的日子</li>
+      <li><b>照片</b>：点「选择文件」，从相册选或拍照（会<b>自动压缩</b>，不会占太多空间）</li>
+      <li><b>感想</b>：可写可不写，记下当时的心情</li>
+    </ul>
+    <ol start="4">
+      <li>点橙色按钮 <b>「点亮 ✨」</b> 保存</li>
+    </ol>
+    <div class="demo"><div class="btn-add">＋</div><div class="cap">↑ 屏幕右下角的橙色 ＋</div></div>
+    <div class="warn">⚠️ <b>地名一定要填</b>，不填存不了。照片和感想可以不填。</div>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="head"><span class="num">3</span><h3>定位 + 自动填地址</h3><button class="speak" onclick="speak('点右下角的定位按钮，允许定位后，地图上会出现一个卡通小人，写着你在哪里。而且地名和城市会自动填好，不用手打。')">🔊</button></div>
+    <ol>
+      <li>点右下角 <b>📍 定位按钮</b></li>
+      <li>浏览器问「是否允许定位」→ 点<b>允许</b></li>
+      <li>地图上出现<b>卡通小人</b>（头顶写着「你在这里」）</li>
+      <li>地名、城市会<b>自动识别填好</b>（精确到街道）</li>
+    </ol>
+    <div class="demo"><div class="me-demo">🧑</div><div class="cap">↑ 定位后出现的小人</div></div>
+    <div class="tip">💡 自动识别的地址偶尔会偏一点（尤其室内或信号弱时），<b>可以手动改</b>。</div>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="head"><span class="num">4</span><h3>足迹本</h3><button class="speak" onclick="speak('点顶部的足迹本按钮，会滑出一个面板。顶部有统计，显示足迹数、城市数、照片数。下面按城市分组，列出每个足迹，可以点删除。')">🔊</button></div>
+    <ol>
+      <li>点顶部 <b>「📋 足迹本」</b> → 右侧滑出面板</li>
+      <li>顶部是<b>统计</b>：足迹数 / 城市数 / 照片数</li>
+      <li>下面<b>按城市分组</b>，每个足迹显示：照片、地名、日期、「X 天前」、感想</li>
+      <li>想删某个足迹 → 点它右下角的<b>「删除」</b> → 确认</li>
+    </ol>
+  </div>
+
+  <div class="step" id="s5">
+    <div class="head"><span class="num">5</span><h3>相册</h3><button class="speak" onclick="speak('点顶部的相册按钮，看到所有上传过的照片，摆成格子。点哪张，哪张就放大，还能看到当时的城市、日期和感想。')">🔊</button></div>
+    <ol>
+      <li>点顶部 <b>「📷 相册」</b></li>
+      <li>所有照片摆成<b>格子</b>，每张下面标着地名</li>
+      <li><b>点一张照片</b> → 全屏放大，显示城市、日期、感想</li>
+      <li>点右上角 ✕ 关闭</li>
+    </ol>
+  </div>
+
+  <div class="step" id="s6">
+    <div class="head"><span class="num">6</span><h3>足迹连线</h3><button class="speak" onclick="speak('当你点亮两个以上足迹，它们会自动连成一条发光的虚线，按你去的时间先后顺序连接。足迹越多，这条线越长，就像你走过的路在发光。')">🔊</button></div>
+    <p>当你点亮 <b>2 个以上</b>足迹后：</p>
+    <ul>
+      <li>地图会自动把它们<b>按时间顺序连起来</b></li>
+      <li>是一条<b>橙色发光虚线</b>，还会慢慢流动</li>
+      <li>足迹越多，这条「人生轨迹」越长，很有成就感</li>
+    </ul>
+  </div>
+
+  <div class="step" id="s7">
+    <div class="head"><span class="num">7</span><h3>成就（完整清单）</h3><button class="speak" onclick="speak('点顶部的成就按钮，看成就墙。下面列出全部成就和解锁条件，还有三个隐藏成就，要你自己去发现。')">🔊</button></div>
+    <p>点顶部 <b>「🏆 成就」</b> 查看。解锁时会<b>放彩带 + 提示</b>。全部成就：</p>
+    <table class="ach-table">
+      <tr><td>👣</td><td><b>初行者</b> — 点亮第 1 个</td></tr>
+      <tr><td>🧭</td><td><b>旅人</b> — 点亮 3 个</td></tr>
+      <tr><td>🔭</td><td><b>探索者</b> — 点亮 5 个</td></tr>
+      <tr><td>🌄</td><td><b>行者</b> — 点亮 10 个</td></tr>
+      <tr><td>🌠</td><td><b>追光者</b> — 点亮 20 个</td></tr>
+      <tr><td>🌊</td><td><b>天涯旅人</b> — 点亮 50 个</td></tr>
+      <tr><td>☀️</td><td><b>此心光明</b> — 点亮 100 个</td></tr>
+      <tr><td>📷</td><td><b>记录者</b> — 留下第一张照片</td></tr>
+      <tr><td>📸</td><td><b>摄影家</b> — 留下 5 张照片</td></tr>
+      <tr><td>✍️</td><td><b>写作者</b> — 写下第一段感想</td></tr>
+      <tr><td>🏙️</td><td><b>城市旅人</b> — 点亮 3 个不同城市</td></tr>
+      <tr><td>🏠</td><td><b>归人</b> — 在家乡（湖南）点亮</td></tr>
+      <tr><td>🎓</td><td><b>追梦人</b> — 在武汉点亮</td></tr>
+    </table>
+    <div class="tip">🔒 <b>还有 3 个隐藏成就</b>（夜行者 / 晨光者 / 黄昏漫步），在<b>深夜 / 清晨 / 黄昏</b>点亮足迹就能解锁——解锁前成就墙里<b>看不到</b>它们，突然弹出来才惊喜。</div>
+  </div>
+
+  <div class="step" id="s8">
+    <div class="head"><span class="num">8</span><h3>海报（分享用）</h3><button class="speak" onclick="speak('点顶部的海报按钮，会自动生成一张图片，写着我的足迹，还有你去过的所有地方。图片会自动下载，你可以发朋友圈。')">🔊</button></div>
+    <ol>
+      <li>点顶部 <b>「🖼 海报」</b></li>
+      <li>自动生成一张图（标题「我的足迹」+ 点亮数 + 地点列表 + 寄语）</li>
+      <li><b>自动下载</b>到手机/电脑 → 发朋友圈、发好友都行</li>
+    </ol>
+    <div class="tip">💡 海报最多列 14 个地方，超过会显示「……还有 N 处」。</div>
+  </div>
+
+  <div class="step" id="s9">
+    <div class="head"><span class="num">9</span><h3>清欢的信</h3><button class="speak" onclick="speak('点顶部的信按钮，看清欢写给你的信。点亮五个足迹，解锁第二封信；点亮十个，解锁第三封。')">🔊</button></div>
+    <ol>
+      <li>点顶部 <b>「💌 信」</b></li>
+      <li>默认有一封<b>第一封信</b></li>
+      <li>点亮 <b>5 个</b>足迹 → 解锁<b>第二封</b></li>
+      <li>点亮 <b>10 个</b>足迹 → 解锁<b>第三封</b></li>
+    </ol>
+  </div>
+
+  <div class="step" id="s10">
+    <div class="head"><span class="num">10</span><h3>全部小彩蛋</h3><button class="speak" onclick="speak('这个应用里藏了很多小彩蛋。点地图会冒星星，双击地图清欢会说话，感想里写出清欢、此心光明、知行合一会触发秘密彩蛋，点顶部的足迹两个字五次也有惊喜，在深夜、清晨、黄昏点亮还有隐藏成就。')">🔊</button></div>
+    <ul>
+      <li>✦ <b>点地图任意处</b> → 冒一颗小星星</li>
+      <li>💬 <b>双击地图</b> → 清欢说悄悄话（15 句随机）</li>
+      <li>✨ 感想里写 <b>「清欢」「此心光明」「知行合一」</b> → 秘密彩蛋</li>
+      <li>🎁 点顶部「⛰ 足迹」logo <b>5 次</b> → 惊喜</li>
+      <li>🎉 第 <b>1 / 3 / 5 / 10 / 20 / 50 / 100</b> 个足迹 → 彩带庆祝</li>
+      <li>🌙 <b>深夜 / 清晨 / 黄昏</b>点亮 → 隐藏成就</li>
+      <li>🏠 在<b>湖南</b>附近点亮 → 提示「家」；在<b>武汉</b> → 提示「未来」</li>
+      <li>🕐 打开时根据<b>时间段</b>（清晨/午后/黄昏/深夜）说不同问候</li>
+    </ul>
+  </div>
+
+  <div class="step" id="s11">
+    <div class="head"><span class="num">11</span><h3>装手机 / 分享给别人</h3><button class="speak" onclick="speak('想装到手机或者分享给别人，需要先发布。打开 netlify drop 网站，把足迹地图文件夹拖进去，得到网址。手机打开网址，添加到主屏幕，就变成一个像 App 一样的东西。')">🔊</button></div>
+    <p><b>先发布（一次性）：</b></p>
+    <ol>
+      <li>打开 <b>app.netlify.com/drop</b>，登录</li>
+      <li>把 <b>D:\足迹地图</b> 文件夹整个拖进去</li>
+      <li>得到一个<b>网址</b></li>
+    </ol>
+    <p><b>手机上安装：</b></p>
+    <ul>
+      <li><b>安卓</b>：浏览器打开网址 → 右上角 ⋮ 菜单 → 「安装应用 / 添加到主屏幕」</li>
+      <li><b>苹果</b>：Safari 打开网址 → 底部分享按钮 → 「添加到主屏幕」</li>
+    </ul>
+    <div class="tip">💡 详细步骤见 <b>D:\足迹地图\部署说明.txt</b>。</div>
+  </div>
+
+  <div class="step" id="faq">
+    <div class="head"><span class="num">?</span><h3>常见问题 FAQ</h3></div>
+    <ul>
+      <li><b>Q：改了之后看不到变化？</b><br>A：浏览器缓存了旧版。按 <b>Ctrl+F5</b> 强制刷新；如果是发布的网址，需要<b>重新拖一次文件夹</b>到 Netlify。</li>
+      <li><b>Q：数据会丢吗？</b><br>A：数据存在<b>你自己的浏览器</b>里，正常不会丢。但<b>清除浏览器数据</b>、或<b>换浏览器/设备</b>，就看不到了。</li>
+      <li><b>Q：自动填的地址不准？</b><br>A：正常，室内或信号弱时会偏。直接<b>手动改</b>就行。</li>
+      <li><b>Q：怎么删掉一个足迹？</b><br>A：打开「📋 足迹本」→ 找到那个足迹 → 点「删除」。</li>
+      <li><b>Q：地图加载慢？</b><br>A：用的高德地图，国内一般快；偶尔网络差就多等几秒。</li>
+      <li><b>Q：为什么别人看不到我的足迹？</b><br>A：目前数据各存各的（存在各自浏览器），<b>还没有云同步</b>。想多人共享，需要加后端（以后可以学）。</li>
+    </ul>
+  </div>
+
+  <div class="step" id="data">
+    <div class="head"><span class="num">i</span><h3>数据说明</h3></div>
+    <ul>
+      <li>你的足迹、照片、感想，都存在<b>你自己设备的浏览器里</b>（技术叫 IndexedDB），<b>不上传到任何服务器</b>，隐私安全。</li>
+      <li>照片上传时会<b>自动压缩</b>（最长边 1280px），省空间。</li>
+      <li><b>换设备 / 换浏览器</b>数据不互通，这是目前的设计。</li>
+      <li>想备份：目前没有一键导出，以后可以加。</li>
+    </ul>
+  </div>
+
+  <footer>
+    三步就能用：<b>点 ＋ → 点地图 → 点亮 ✨</b><br>愿你所到之处，皆有光 🍃
+  </footer>
+
+</div>
+
+<script>
+function speak(text) {
+  if (!('speechSynthesis' in window)) { alert('浏览器不支持语音'); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = 0.95;
+  window.speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>
