@@ -1,0 +1,15 @@
+{
+  "name": "足迹 · 点亮地图",
+  "short_name": "足迹",
+  "description": "走到哪，点亮哪——记录你的旅行足迹",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf6ee",
+  "theme_color": "#e8823c",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
