@@ -1,6 +1,13 @@
-# 行舟记 🗺️
+# 行舟记 🗺️ · Xingzhouji — Travel Footprint Map
 
 > 走到哪，点亮哪。一个记录旅行足迹、规划下一站的开源小站。
+> Light up every place you've been. An open-source travel footprint map & trip planner.
+
+[中文](#-功能) · [English](#english)
+
+## 📸 截图
+
+![行舟记截图](screenshot.png)
 
 ## ✨ 功能
 
@@ -35,3 +42,23 @@ icon-192.png / icon-512.png
 ## 📄 License
 
 MIT
+
+---
+
+## English
+
+**Xingzhouji (行舟记)** is an open-source travel footprint map & trip planner.
+
+**Features**
+
+- **Light up footprints** — mark places you've visited, auto-connected into a glowing route
+- **Trip planner** — city checklist, six-item budget, transport/lodging price comparison, one-click itinerary export
+- **Travel album** — photos saved with each footprint
+- **Achievements** — unlock badges by checking in, taking photos, writing notes (plus hidden easter eggs)
+- **Footprint poster** — generate a shareable image in one click
+
+**Tech stack**: zero-dependency vanilla front-end (single `index.html` + `sw.js`), [Leaflet](https://leafletjs.com/) with AMap tiles, IndexedDB for offline storage, PWA (offline + add-to-home-screen).
+
+**Run locally**: just open `index.html` — no install, no build step.
+
+**License**: MIT
