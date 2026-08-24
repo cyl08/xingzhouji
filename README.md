@@ -3,6 +3,11 @@
 > 走到哪，点亮哪。一个会陪你记住每一段旅程的足迹地图。
 > Light up every place you've been — a warm travel-footprint map that also plans your next stop.
 
+![License: MIT](https://img.shields.io/badge/license-MIT-blue?logo=github)
+![Vanilla JS](https://img.shields.io/badge/stack-vanilla%20JS-yellow)
+![Zero deps](https://img.shields.io/badge/dependencies-0-brightgreen)
+![PWA-ready](https://img.shields.io/badge/PWA-ready-blueviolet)
+![GitHub stars](https://img.shields.io/github/stars/cyl08/xingzhouji)
 [中文](#-核心亮点) · [English](#english)
 
 ## 📸 截图
