@@ -12,6 +12,21 @@
   :root {
     --warm: #e8823c; --paper: #faf6ee; --ink: #3a342c; --ink-soft: #8a7f6e; --line: #e8dfd0;
   }
+  /* ===== 深色主题 ===== */
+  body.dark { --paper:#1f1b16; --ink:#e8e0d2; --ink-soft:#a99a82; --line:#3a3228; background:#1a1712; }
+  body.dark #topbar { background: rgba(31,27,22,.94); }
+  body.dark #topbar button { background:#2a241c; color:#e8e0d2; }
+  body.dark #topbar button:hover { background:var(--warm); color:#fff; }
+  body.dark .fp-label { background: rgba(31,27,22,.94) !important; color:#e8e0d2 !important; }
+  body.dark .fp-card, body.dark .ach, body.dark .al-photo, body.dark .plan-card, body.dark .check-item,
+  body.dark .export-box, body.dark .stat { background:#2a241c; border-color:#3a3228; color:#e8e0d2; }
+  body.dark .ach.unlocked { background:#2f281e; }
+  body.dark .panel input[type=text], body.dark .panel input[type=date], body.dark .panel textarea,
+  body.dark .check-add input, body.dark .bud-row input, body.dark .cmp-row input { background:#2a241c; color:#e8e0d2; border-color:#3a3228; }
+  body.dark .leaflet-container { background:#1a1712; }
+  body.dark .leaflet-tile { filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6); }
+  body.dark .leaflet-popup-content-wrapper, body.dark .leaflet-popup-tip { background:#2a241c; color:#e8e0d2; }
+  body.dark .fp-popup .d, body.dark .fp-popup .n { color:#a99a82; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body { font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; color: var(--ink); overflow: hidden; background: var(--paper); }
@@ -239,8 +254,10 @@
   <button id="achBtn">🏆 成就</button>
   <button id="planBtn">🗺 规划</button>
   <button id="posterBtn">🖼 海报</button>
+  <button id="statBtn">📊 统计</button>
   <button id="letterBtn">💌 信</button>
   <button id="guideBtn">📖 指南</button>
+  <button id="themeBtn" title="切换深色/浅色">🌙</button>
 </div>
 
 <button id="locateBtn" title="定位到我的位置">📍</button>
@@ -291,6 +308,16 @@
     <div id="achSummary"></div>
     <div id="achGrid"></div>
     <div class="btn-row"><button id="achClose" style="background:var(--line)">关闭</button></div>
+  </div>
+</div>
+
+<!-- 统计弹窗 -->
+<div class="mask" id="statMask">
+  <div class="panel" style="width:440px">
+    <h2>📊 我的足迹统计</h2>
+    <div id="statSummary"></div>
+    <div id="statYearBox"></div>
+    <div class="btn-row"><button id="statClose" style="background:var(--line)">关闭</button></div>
   </div>
 </div>
 
@@ -714,6 +741,55 @@ document.getElementById('letterBtn').addEventListener('click', () => {
 document.getElementById('letterClose').addEventListener('click', () => letterMask.classList.remove('show'));
 letterMask.addEventListener('click', (e) => { if (e.target === letterMask) letterMask.classList.remove('show'); });
 
+// ================= 足迹统计 =================
+const statMask = document.getElementById('statMask');
+document.getElementById('statBtn').addEventListener('click', () => { renderStats(); statMask.classList.add('show'); });
+document.getElementById('statClose').addEventListener('click', () => statMask.classList.remove('show'));
+statMask.addEventListener('click', (e) => { if (e.target === statMask) statMask.classList.remove('show'); });
+
+function renderStats() {
+  const total = footprints.length;
+  const cities = new Set(footprints.map(f => f.city).filter(Boolean)).size;
+  const photos = footprints.filter(f => f.photo).length;
+  const notes = footprints.filter(f => f.note).length;
+  document.getElementById('statSummary').innerHTML =
+    '<div class="fp-stats">' +
+    '<div class="stat"><div class="n">' + total + '</div><div class="k">足迹</div></div>' +
+    '<div class="stat"><div class="n">' + cities + '</div><div class="k">城市</div></div>' +
+    '<div class="stat"><div class="n">' + photos + '</div><div class="k">照片</div></div>' +
+    '<div class="stat"><div class="n">' + notes + '</div><div class="k">感想</div></div>' +
+    '</div>';
+  const years = {};
+  footprints.forEach(f => {
+    const y = (f.date && f.date.slice(0, 4)) || new Date(f.createdAt).getFullYear();
+    years[y] = (years[y] || 0) + 1;
+  });
+  const ylist = Object.keys(years).sort().reverse();
+  if (ylist.length) {
+    document.getElementById('statYearBox').innerHTML =
+      '<div class="plan-section"><div class="ps-title">📅 年度足迹</div>' +
+      ylist.map(y => '<div class="cmp-row"><span class="c-name">' + y + ' 年</span><span class="c-badge c-best">' + years[y] + ' 处</span></div>').join('') +
+      '</div>';
+  } else {
+    document.getElementById('statYearBox').innerHTML = '';
+  }
+}
+
+// ================= 深色主题 =================
+let darkMode = localStorage.getItem('fp-dark') === '1';
+const themeBtn = document.getElementById('themeBtn');
+function applyTheme() {
+  document.body.classList.toggle('dark', darkMode);
+  themeBtn.textContent = darkMode ? '☀️' : '🌙';
+  themeBtn.title = darkMode ? '切换浅色' : '切换深色';
+}
+themeBtn.addEventListener('click', () => {
+  darkMode = !darkMode;
+  localStorage.setItem('fp-dark', darkMode ? '1' : '0');
+  applyTheme();
+});
+applyTheme();
+
 // 使用指南
 const guideMask = document.getElementById('guideMask');
 document.getElementById('guideBtn').addEventListener('click', () => guideMask.classList.add('show'));
@@ -732,6 +808,98 @@ function updateSplashCount() {
 }
 
 // ================= 旅行规划 =================
+// 热门城市打卡点推荐库（离线兜底，联网失败时也能用）
+const CITY_GUIDES = {
+  '北京': ['故宫博物院','八达岭长城','天安门广场','颐和园','南锣鼓巷','天坛','什刹海','北京烤鸭'],
+  '上海': ['外滩','上海迪士尼','豫园·城隍庙','南京路步行街','武康路','陆家嘴三件套','田子坊','生煎小笼包'],
+  '广州': ['广州塔','沙面岛','陈家祠','珠江夜游','北京路步行街','早茶','长隆欢乐世界','白云山'],
+  '深圳': ['深圳湾公园','世界之窗','欢乐谷','大梅沙','梧桐山','东门老街','海上世界','华强北'],
+  '武汉': ['黄鹤楼','东湖绿道','武汉大学','户部巷','长江大桥','江汉路步行街','热干面','湖北省博物馆'],
+  '长沙': ['橘子洲','岳麓山·岳麓书院','太平老街','五一广场','茶颜悦色','臭豆腐','湖南省博物馆','IFS国金中心'],
+  '成都': ['宽窄巷子','锦里','武侯祠','熊猫基地','春熙路·太古里','都江堰','杜甫草堂','火锅'],
+  '重庆': ['洪崖洞','磁器口','解放碑','李子坝轻轨','长江索道','南山一棵树','武隆天坑','重庆火锅'],
+  '西安': ['兵马俑','大雁塔','钟楼·鼓楼','回民街','古城墙','大唐不夜城','陕西历史博物馆','华山'],
+  '南京': ['中山陵','夫子庙·秦淮河','明孝陵','总统府','南京博物院','鸡鸣寺','老门东','鸭血粉丝汤'],
+  '杭州': ['西湖','灵隐寺','雷峰塔','西溪湿地','宋城','河坊街','龙井茶园','千岛湖'],
+  '苏州': ['拙政园','狮子林','平江路','山塘街','寒山寺','苏州博物馆','周庄古镇','松鼠桂鱼'],
+  '厦门': ['鼓浪屿','厦门大学','环岛路','曾厝垵','南普陀寺','中山路步行街','沙坡尾','沙茶面'],
+  '青岛': ['栈桥','八大关','崂山','五四广场·奥帆中心','啤酒博物馆','金沙滩','劈柴院','青岛啤酒'],
+  '昆明': ['石林','滇池','翠湖公园','西山龙门','斗南花市','云南大学','过桥米线','九乡'],
+  '大理': ['洱海','大理古城','苍山','崇圣寺三塔','喜洲古镇','双廊','寂照庵','酸辣鱼'],
+  '丽江': ['丽江古城','玉龙雪山','束河古镇','泸沽湖','拉市海','木府','蓝月谷','腊排骨火锅'],
+  '桂林': ['漓江','阳朔西街','象鼻山','两江四湖','龙脊梯田','银子岩','桂林米粉','遇龙河'],
+  '三亚': ['亚龙湾','蜈支洲岛','天涯海角','南山文化旅游区','大东海','海棠湾免税店','第一市场海鲜','呀诺达'],
+  '哈尔滨': ['中央大街','圣索菲亚教堂','太阳岛','冰雪大世界','松花江','老道外','锅包肉','极地馆'],
+  '拉萨': ['布达拉宫','大昭寺','八廓街','纳木错','色拉寺','罗布林卡','羊卓雍措','藏面甜茶'],
+  '乌鲁木齐': ['天山天池','国际大巴扎','红山公园','南山牧场','新疆博物馆','大巴扎夜市','烤羊肉串','达坂城'],
+  '香港': ['维多利亚港','太平山顶','香港迪士尼','海洋公园','尖沙咀','铜锣湾','旺角','兰桂坊'],
+  '澳门': ['大三巴牌坊','威尼斯人','澳门塔','官也街','路氹城','葡式蛋挞','渔人码头','妈阁庙'],
+  '天津': ['五大道','意式风情区','天津之眼','古文化街','瓷房子','煎饼果子','盘山','海河夜景'],
+  '南昌': ['滕王阁','八一广场','绳金塔','秋水广场','梅岭','瓦罐汤·拌粉','滕王阁夜游','瑶湖'],
+  '郑州': ['少林寺','嵩山','河南博物院','二七纪念塔','黄河游览区','烩面','郑州方特','郑东新区'],
+  '洛阳': ['龙门石窟','白马寺','老君山','牡丹园','丽景门','洛阳水席','关林','隋唐洛阳城'],
+  '济南': ['趵突泉','大明湖','千佛山','芙蓉街','曲水亭街','泉城广场','把子肉','九如山'],
+  '沈阳': ['沈阳故宫','张氏帅府','北陵公园','中街','九一八历史博物馆','西塔','锅包肉','棋盘山'],
+  '大连': ['星海广场','老虎滩','金石滩','棒棰岛','俄罗斯风情街','滨海路','海鲜','发现王国'],
+  '福州': ['三坊七巷','鼓山','西湖公园','上下杭','林则徐纪念馆','鱼丸·肉燕','平潭岛','云顶'],
+  '贵阳': ['甲秀楼','青岩古镇','黄果树瀑布','黔灵山公园','天河潭','丝娃娃·酸汤鱼','青岩猪脚','夜郎谷'],
+  '兰州': ['中山桥','白塔山','黄河母亲','五泉山','正宁路夜市','牛肉面','甘肃省博物馆','水墨丹霞'],
+  '西宁': ['塔尔寺','东关清真大寺','青海湖','日月山','莫家街','酿皮·酸奶','北禅寺','互助土族园'],
+  '银川': ['西夏王陵','沙湖','镇北堡影视城','贺兰山岩画','水洞沟','怀远夜市','羊肉手抓','鸣翠湖'],
+  '呼和浩特': ['大召寺','内蒙古博物院','昭君博物院','敕勒川草原','塞上老街','烧麦·羊杂碎','响沙湾','五塔寺'],
+  '南宁': ['青秀山','南湖公园','中山路夜市','扬美古镇','广西民族博物馆','老友粉','大明山','三街两巷'],
+  '海口': ['骑楼老街','假日海滩','火山口地质公园','五公祠','万绿园','清补凉','观澜湖','东寨港红树林'],
+  '黄山': ['黄山','宏村','西递','屯溪老街','翡翠谷','徽州古城','臭鳜鱼','新安江'],
+  '张家界': ['张家界国家森林公园','天门山','玻璃桥·大峡谷','武陵源','黄龙洞','宝峰湖','三下锅','土家风情园']
+};
+function findCityGuide(city) {
+  if (!city) return null;
+  const c = city.trim().replace(/[市区县]/g, '');
+  if (CITY_GUIDES[c]) return CITY_GUIDES[c];
+  for (const k in CITY_GUIDES) {
+    if (c.includes(k) || k.includes(c)) return CITY_GUIDES[k];
+  }
+  return null;
+}
+function autoRecommend(p) {
+  const guide = findCityGuide(p.city);
+  if (guide && guide.length) {
+    const existing = new Set(p.checklist.map(c => c.name));
+    let added = 0;
+    guide.forEach(name => {
+      if (!existing.has(name)) { p.checklist.push({ name, done: false }); existing.add(name); added++; }
+    });
+    savePlans(); renderPlanDetail(p.id);
+    toast('已推荐 ' + added + ' 个打卡点，挑着玩吧 🗺');
+  } else {
+    toast('这个城市还没收录，我联网搜一下～ 🌐');
+    webSearchGuide(p);
+  }
+}
+async function webSearchGuide(p) {
+  const q = (p.city || '') + ' 必去景点';
+  try {
+    const url = 'https://zh.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + encodeURIComponent(q) + '&srlimit=8&format=json&origin=*';
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    const data = await res.json();
+    const titles = (data && data.query && data.query.search || []).map(s => s.title);
+    if (!titles.length) { toast('没搜到，手动加几个吧 🍃'); return; }
+    const existing = new Set(p.checklist.map(c => c.name));
+    let added = 0;
+    titles.forEach(t => {
+      const name = t.replace(/旅游|景点|景区|攻略|推荐/g, '').trim();
+      if (name && !existing.has(name)) { p.checklist.push({ name, done: false }); existing.add(name); added++; }
+    });
+    savePlans(); renderPlanDetail(p.id);
+    toast(added ? '联网推荐了 ' + added + ' 个，可能不太准，挑着用 🌐' : '搜索结果和现有重复啦～');
+  } catch (e) {
+    toast('联网失败（可能网络不通），手动加几个吧 🍃');
+  }
+}
+
 let plans = JSON.parse(localStorage.getItem('fp-plans') || '[]');
 function savePlans() { localStorage.setItem('fp-plans', JSON.stringify(plans)); }
 let currentPlanId = null;
@@ -792,7 +960,8 @@ function renderPlanDetail(id) {
       '<div class="check-item' + (c.done ? ' done' : '') + '"><div class="ck" data-ck="' + i + '">' + (c.done ? '✓' : '') + '</div>' +
       '<div class="ck-name">' + esc(c.name) + '</div><div class="ck-del" data-delck="' + i + '">✕</div></div>'
     ).join('') : '<div class="plan-empty" style="padding:12px">还没有打卡点，加一个吧～</div>') +
-    '<div class="check-add"><input id="checkInput" placeholder="想去的地方（景点/美食/体验）"><button id="checkAddBtn">＋</button></div></div>';
+    '<div class="check-add"><input id="checkInput" placeholder="想去的地方（景点/美食/体验）"><button id="checkAddBtn">＋</button></div>' +
+    '<div class="check-add" style="margin-top:6px"><button id="autoRecBtn" style="flex:1;background:var(--warm);color:#fff">🤖 智能推荐打卡点</button></div></div>';
 
   const BUD_LABELS = { transport:'交通', lodging:'住宿', food:'餐饮', tickets:'门票', shopping:'购物', other:'其他' };
   const budgetHtml = '<div class="plan-section"><div class="ps-title">💰 预算</div>' +
@@ -824,6 +993,7 @@ function renderPlanDetail(id) {
     p.checklist.push({ name: inp.value.trim(), done: false });
     inp.value = ''; savePlans(); renderPlanDetail(id);
   };
+  document.getElementById('autoRecBtn').onclick = () => autoRecommend(p);
   document.querySelectorAll('[data-ck]').forEach(el => {
     el.onclick = () => { const i = Number(el.dataset.ck); p.checklist[i].done = !p.checklist[i].done; savePlans(); renderPlanDetail(id); };
   });
