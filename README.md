@@ -103,3 +103,14 @@ MIT
 **Live demo**: https://cyl08.github.io/xingzhouji/
 
 **License**: MIT
+## Get in touch
+
+Questions, bug reports, or just want to say hi? I'd genuinely like to hear from you.
+
+- **Found a bug or have an idea?** → [open an issue](../../issues)
+- **Email** → `2495297174@qq.com`
+- **Try the hosted version** (no setup required) → https://mochiway.com/mochi/
+
+I'm a student developer building small, private-by-default web apps — the kind where your data never leaves your own device. If this one is useful to you, I'd love to know what you're using it for.
+
+*If you'd rather not self-host, there's also a one-time-purchase version — same app, no setup, and it helps me keep building.*
